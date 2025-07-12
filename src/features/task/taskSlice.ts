@@ -62,6 +62,13 @@ const taskSlice = createSlice({
     inactiveUpdate: state => {
       state.taskUpdating = {};
     },
+    updateTaskLocal: (state, action: PayloadAction<{ id: string; data: Partial<Omit<TaskItem, 'id'>> }>) => {
+      const { id, data } = action.payload;
+      const index = state.tasks.findIndex(t => t.id === id);
+      if (index !== -1) {
+        state.tasks[index] = { ...state.tasks[index], ...data };
+      }
+    },
   },
   extraReducers: builder => {
     builder
@@ -168,4 +175,4 @@ const taskSlice = createSlice({
 
 export default taskSlice.reducer;
 
-export const { activeUpdate, inactiveUpdate } = taskSlice.actions;
+export const { activeUpdate, inactiveUpdate, updateTaskLocal } = taskSlice.actions;
