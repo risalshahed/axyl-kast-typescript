@@ -1,69 +1,108 @@
-# React + TypeScript + Vite
+# React Kanban Task Management Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, interactive Kanban-style Todo List Application built with React.js, Redux Toolkit, TypeScript, and Tailwind CSS.
+This project demonstrates task management across different stages, context menus, drag-and-drop functionality, and responsive design with smooth animations.
 
-Currently, two official plugins are available:
+## Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### This application enables users to:
 
-## Expanding the ESLint configuration
+- Create, view, and manage todos in a Kanban board with three columns:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+  - New (blue): For newly created tasks
+  - Ongoing (orange): For tasks currently in progress
+  - Done (green): For completed tasks
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Move tasks between columns using:
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+  - Right-click context menu
+  - Drag and Drop (powered by Dnd Kit)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Set due dates on ongoing tasks and receive alerts when tasks are overdue
+
+- Enjoy a responsive, clean, and modern UI enhanced by Tailwind CSS and custom animations
+
+## Features
+
+### Three Columns for Task Management
+
+- New: Create tasks here (title, description)
+- Ongoing: Track active work
+- Done: Archive completed tasks
+- Each status is visually distinct with color labels
+
+### Todo Item Creation
+
+- Form to create new tasks
+- Tasks automatically added to the top of the New column
+
+### Moving Tasks
+
+- Right-click Context Menu:
+
+  - Shows only valid move options (excluding current status)
+
+  - Example
+
+    - From New: Move to Ongoing or Done
+    - From Ongoing: Move to New or Done
+    - From Done: Move to New or Ongoing
+
+- Drag and Drop:
+  - Smoothly drag tasks between columns
+  - Status updates automatically
+
+### Due Date & Overdue Alerts
+
+In Ongoing column, set a due date/time
+
+Application checks if tasks are overdue and shows an alert if so
+
+### Responsive Design & Animations
+
+Tailwind CSS used for layout and styling
+
+Subtle animations when:
+
+Tasks are added
+
+Tasks move between columns
+
+Alerts appear
+
+### TypeScript Strictness
+
+Type safety throughout the codebase
+
+### Redux Toolkit Integration
+
+Global state management of all tasks
+
+Clean slices and actions
+
+### ⚙️ Tech Stack
+
+- #### React.js – UI framework
+- #### Redux Toolkit – State management
+- #### TypeScript – Type safety and better developer experience
+- #### Tailwind CSS – Utility-first styling
+- #### Dnd Kit – Drag-and-drop functionality
+- #### Date handling – To manage due dates and overdue checks
+
+### Run the Project locally as follows
+
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Install dependencies
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+npm i
+```
+
+### Run the Application
+
+```
+npm run dev
 ```
