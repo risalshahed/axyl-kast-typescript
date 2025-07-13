@@ -1,12 +1,8 @@
-// import editImg from '../../assets/images/edit.svg'
-// import deleteImg from '../../assets/images/delete.svg'
-
 import { useDraggable } from "@dnd-kit/core";
 import type { TaskItem } from "../api/data";
 import React, { useEffect, useRef, useState } from "react";
 import { updateTaskLocal } from "../features/task/taskSlice";
 import { useAppDispatch } from "../app/hooks";
-import Form from "./Form";
 
 interface TaskCardProps {
   task: TaskItem;
@@ -19,7 +15,7 @@ interface TaskCardProps {
 const statuses = ["new", "ongoing", "done"] as const;
 
 export default function TaskCard({ task, openContextId, setOpenContextId, color, categoryBoxShadow }: TaskCardProps) {
-  const { id, title, description, status, dueAt } = task;
+  const { id, title, description, status } = task;
 
   const dispatch = useAppDispatch();
 
@@ -104,7 +100,7 @@ export default function TaskCard({ task, openContextId, setOpenContextId, color,
     if (diffDays < 0) {
       return (
         <p className="text-xs text-red-600 font-semibold mt-1">
-          ⚠️ Overdue!
+          Deadline is finished {diffDays * -1} days ago!
         </p>
       );
     } else if (diffDays === 0) {
@@ -121,25 +117,6 @@ export default function TaskCard({ task, openContextId, setOpenContextId, color,
       );
     }
   }
-  
-  useEffect(() => {
-    if (!selectedDate) return;
-  
-    const today = new Date();
-    today.setHours(0,0,0,0);
-  
-    const selected = new Date(selectedDate);
-    selected.setHours(0,0,0,0);
-  
-    const diffTime = selected.getTime() - today.getTime();
-    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-  
-    if (diffDays < 0) {
-      alert('Deadline for this task is finished!');
-      setSelectedDate(""); // date clear kore dao
-    }
-  }, [selectedDate]);
-  
 
   return (
     <>
@@ -204,7 +181,6 @@ export default function TaskCard({ task, openContextId, setOpenContextId, color,
           </div>
         )}
       </div>
-      <Form />
     </>
   )
 }

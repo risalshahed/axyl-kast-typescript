@@ -1,107 +1,98 @@
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import React, { useEffect, useState } from "react";
+import { useAppDispatch } from "../app/hooks";
+import { createTask } from "../features/task/taskSlice";
 
-export default function Form() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-
-  // either the form is add or update mode!
-  const [updateMode, setUpdateMode] = useState(false);
+export default function Form({ onClose }: { onClose: () => void }) {
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
 
   const dispatch = useAppDispatch();
 
-  // const { isLoading, isError } = useAppSelector(state => state.task);
-  const task = useAppSelector(state => state.task);
+  const resetForm = () => {
+    setTitle('');
+    setDescription('');
+  }
 
-  console.log(task);
+  // Close on ESC press
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose();
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Submitted:', { title, description });
+    try {
+      await dispatch(createTask({
+        title,
+        description,
+        status: 'new',
+        movedToOngoingAt: null,
+        dueAt: null
+      })).unwrap();
+      resetForm();
+      onClose();
+    } catch (error) {
+      console.error('Error creating task:', error);
+    }
+  };
 
   return (
-    <div className="form">
-      <h3>Add new transaction</h3>
-
-      {/* <form onSubmit={updateMode ? handleUpdate : handleCreate}> */}
-      <form>
-        <div className="form-group">
-          <label htmlFor="transaction_name">Title</label>
-          <input
-            type="text"
-            name="title"
-            required
-            placeholder="enter title"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-          />
-        </div>
-
-        <div className="form-group radio">
-          <label htmlFor="transaction_type">Type</label>
-          {/* <div className="radio_group">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 bg-gray-500 opacity-90 z-10 flex items-center justify-center"
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        className="bg-white w-full max-w-md mx-auto rounded-lg shadow-lg p-6"
+      >
+        <h3 className="text-xl font-semibold mb-4 text-center">
+          Add New Task
+        </h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+              Title
+            </label>
             <input
-              type="radio"
-              placeholder="Income"
+              id="title"
+              type="text"
+              name="title"
               required
-              name="type"
-              value="income"
-              checked={type === "income"}
-              onChange={e => setType("income")}
+              placeholder="Enter title"
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-400"
             />
-            <label htmlFor="transaction_type">Income</label>
           </div>
-          <div className="radio_group">
+
+          <div>
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
             <input
-              type="radio"
-              placeholder="Expense"
+              id="description"
+              type="text"
+              name="description"
               required
-              name="type"
-              value="expense"
-              checked={type === "expense"}
-              onChange={e => setType("expense")}
+              placeholder="Enter description"
+              value={description}
+              onChange={e => setDescription(e.target.value)}
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-400"
             />
-            <label htmlFor="transaction_type">Expense</label>
-          </div> */}
-        </div>
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="transaction_amount">Description</label>
-          <input
-            type="text"
-            placeholder="enter description"
-            required
-            name="description"
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-          />
-        </div>
-
-        <button
-          // disabled={isLoading}
-          className="btn"
-          type="submit"
-        >
-          {updateMode ? 'Update' : 'Add'} Transaction
-        </button>
-
-        {/* Error message */}
-        {/* {
-          !isLoading && isError && (
-            <p className="error">
-              An error occurred
-            </p>
-          )
-        } */}
-
-      </form>
-
-      {/* {
-        updateMode && (
           <button
-            onClick={cancelUpdateMode}
-            className="btn cancel_update"
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md transition cursor-pointer"
           >
-            Abort the Update
+            Add Task
           </button>
-        )
-      } */}
+        </form>
+      </div>
     </div>
-  )
+  );
 }

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit"
-import { addTask, deleteTask, editTask, getTasks } from "./taskApi"
+import { addTask, getTasks } from "./taskApi"
 import type { TaskItem } from "../../api/data";
 
 export interface TaskState {
@@ -7,7 +7,6 @@ export interface TaskState {
   isLoading: boolean;
   isError: boolean;
   error: string | undefined;
-  taskUpdating: Record<string, unknown>;
 }
 
 export const initialState: TaskState = {
@@ -15,7 +14,6 @@ export const initialState: TaskState = {
   isLoading: false,
   isError: false,
   error: '',
-  taskUpdating: {}
 }
 
 // Async Thunks
@@ -33,34 +31,6 @@ export const createTask = createAsyncThunk<TaskItem, Omit<TaskItem, 'id'>>(
   }
 );
 
-export const updateTask = createAsyncThunk<
-  TaskItem,
-  { id: string; data: Partial<Omit<TaskItem, 'id'>> },
-  { state: { task: TaskState } }
->(
-  'task/updateTask',
-  async (payload, thunkAPI) => {
-    const { id, data } = payload;
-    const state = thunkAPI.getState();
-    const existingTask = state.task.tasks.find(t => t.id === id);
-
-    // Inject movedToOngoingAt if status is becoming 'ongoing' and not already set
-    if (
-      data.status === "ongoing" &&
-      existingTask?.movedToOngoingAt === null
-    ) {
-      data.movedToOngoingAt = new Date().toISOString();
-    }
-
-    const updatedTask = editTask(id, data);
-    return updatedTask;
-  }
-  // 'task/updateTask', ({ id, data }) => {
-  //   const task = editTask(id, data);
-  //   return task;
-  // }
-);
-
 export const removeTask = createAsyncThunk<
   TaskItem[],
   string
@@ -74,12 +44,12 @@ const taskSlice = createSlice({
   name: 'task',
   initialState,
   reducers: {
-    activeUpdate: (state, action: PayloadAction<Record<string, unknown>>) => {
-      state.taskUpdating = action.payload;
-    },
-    inactiveUpdate: state => {
-      state.taskUpdating = {};
-    },
+    // activeUpdate: (state, action: PayloadAction<Record<string, unknown>>) => {
+    //   state.taskUpdating = action.payload;
+    // },
+    // inactiveUpdate: state => {
+    //   state.taskUpdating = {};
+    // },
     updateTaskLocal: (state, action: PayloadAction<{ id: string; data: Partial<Omit<TaskItem, 'id'>> }>) => {
       const { id, data } = action.payload;
       const index = state.tasks.findIndex(t => t.id === id);
@@ -126,62 +96,11 @@ const taskSlice = createSlice({
       (state, action) => {
         state.isError = false;
         state.isLoading = false;
-        state.tasks.push(action.payload);
+        state.tasks.unshift(action.payload);
       }
     )
     .addCase(
       createTask.rejected,
-      (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.error = action.error?.message;
-      }
-    )
-    .addCase(
-      updateTask.pending,
-      state => {
-        state.isError = false;
-        state.isLoading = true;
-      }
-    )
-    .addCase(
-      updateTask.fulfilled,
-      (state, action: PayloadAction<TaskItem>) => {
-        state.isError = false;
-        state.isLoading = false;
-        const indexToUpdate = state.tasks.findIndex(
-          t => t.id === action.payload.id
-        );
-        if(indexToUpdate !== -1) {
-          state.tasks[indexToUpdate] = action.payload;
-        }
-      }
-    )
-    .addCase(
-      updateTask.rejected,
-      (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.error = action.error?.message;
-      }
-    )
-    .addCase(
-      removeTask.pending,
-      state => {
-        state.isError = false;
-        state.isLoading = true;
-      }
-    )
-    .addCase(
-      removeTask.fulfilled,
-      (state, action) => {
-        state.isError = false;
-        state.isLoading = false;
-        state.tasks = state.tasks.filter(t => t.id !== action.meta.arg)
-      }
-    )
-    .addCase(
-      removeTask.rejected,
       (state, action) => {
         state.isLoading = false;
         state.isError = true;
@@ -193,4 +112,4 @@ const taskSlice = createSlice({
 
 export default taskSlice.reducer;
 
-export const { activeUpdate, inactiveUpdate, updateTaskLocal } = taskSlice.actions;
+export const { updateTaskLocal } = taskSlice.actions;
