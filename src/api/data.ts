@@ -1,7 +1,14 @@
 export interface Column {
   id: string;
   title: string;
+  color: string;
 };
+
+export const columns: Column[] = [
+  { id: 'new', title: 'New', color: 'bg-blue-500 text-white' },
+  { id: 'ongoing', title: 'Ongoing', color: 'bg-orange-500 text-white' },
+  { id: 'done', title: 'Done', color: 'bg-green-500 text-white' },
+];
 
 export interface TaskItem {
   id: string;
@@ -9,12 +16,6 @@ export interface TaskItem {
   description: string;
   status: 'new' | 'ongoing' | 'done';
 };
-
-export const columns: Column[] = [
-  { id: 'new', title: 'New' },
-  { id: 'ongoing', title: 'Ongoing' },
-  { id: 'done', title: 'Done' },
-];
 
 export const data: TaskItem[] = [
   {

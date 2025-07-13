@@ -16,3 +16,11 @@ body {
 .column {
     box-shadow: 5px 8px 18px #ccc;
 }
+
+.context-menu {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  
+.context-menu-item:hover {
+background-color: #f0f0f0;
+}
