@@ -26,8 +26,6 @@ export default function Tasks() {
     dispatch(updateTaskLocal({ id, data: { status: newStatus } }));
   };
 
-  // let content;
-
   if(isLoading) return <p>Loading...</p>;
   
   if(!isLoading && isError) return <p>An Error Occurred</p>;
@@ -35,7 +33,6 @@ export default function Tasks() {
   if(!isLoading && !isError && tasks?.length === 0) return <p>No tasks found</p>;
 
   return (
-    // <div className='mx-auto gap-5 pt-10 pb-20 grid items-center md:items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-3'>
     <div className='mx-auto gap-5 pt-10 pb-20 flex flex-wrap md:flex-nowrap items-center md:items-start justify-center'>
       <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
         {

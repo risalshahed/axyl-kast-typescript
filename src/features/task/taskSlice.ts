@@ -35,12 +35,30 @@ export const createTask = createAsyncThunk<TaskItem, Omit<TaskItem, 'id'>>(
 
 export const updateTask = createAsyncThunk<
   TaskItem,
-  { id: string; data: Partial<Omit<TaskItem, 'id'>> }
+  { id: string; data: Partial<Omit<TaskItem, 'id'>> },
+  { state: { task: TaskState } }
 >(
-  'task/updateTask', ({ id, data }) => {
-    const task = editTask(id, data);
-    return task;
+  'task/updateTask',
+  async (payload, thunkAPI) => {
+    const { id, data } = payload;
+    const state = thunkAPI.getState();
+    const existingTask = state.task.tasks.find(t => t.id === id);
+
+    // Inject movedToOngoingAt if status is becoming 'ongoing' and not already set
+    if (
+      data.status === "ongoing" &&
+      existingTask?.movedToOngoingAt === null
+    ) {
+      data.movedToOngoingAt = new Date().toISOString();
+    }
+
+    const updatedTask = editTask(id, data);
+    return updatedTask;
   }
+  // 'task/updateTask', ({ id, data }) => {
+  //   const task = editTask(id, data);
+  //   return task;
+  // }
 );
 
 export const removeTask = createAsyncThunk<
