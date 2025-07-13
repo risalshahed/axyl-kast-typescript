@@ -1,5 +1,7 @@
 # React Kanban Task Management Application
 
+## [Live Application](https://axyl-kast-typescript.vercel.app)
+
 A modern, interactive Kanban-style Todo List Application built with React.js, Redux Toolkit, TypeScript, and Tailwind CSS.
 This project demonstrates task management across different stages, context menus, drag-and-drop functionality, and responsive design with smooth animations.
 
