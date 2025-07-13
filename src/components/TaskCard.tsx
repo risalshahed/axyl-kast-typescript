@@ -24,8 +24,8 @@ export default function TaskCard({ task, openContextId, setOpenContextId, color,
 
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  // Right-click menu state
-  // const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
+  const [menuPosition, setMenuPosition] = React.useState<{ x: number; y: number } | null>(null);
+
 
   const {
     attributes, listeners, setNodeRef, transform
@@ -39,6 +39,7 @@ export default function TaskCard({ task, openContextId, setOpenContextId, color,
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
     setOpenContextId(id);
+    setMenuPosition({ x: e.clientX, y: e.clientY });
   };
 
   // Use type-safe status
@@ -65,6 +66,28 @@ export default function TaskCard({ task, openContextId, setOpenContextId, color,
     };
   }, [openContextId, id, setOpenContextId]);
 
+  // menu viewscreen side effect
+  useEffect(() => {
+    if (!menuPosition) return;
+  
+    const menuWidth = 150; // approximate width of the menu in pixels
+    const menuHeight = otherStatuses.length * 36; // approximate height based on items
+  
+    let { x, y } = menuPosition;
+  
+    // Horizontal overflow
+    if (x + menuWidth > window.innerWidth) {
+      x = window.innerWidth - menuWidth - 10;
+    }
+    // Vertical overflow
+    if (y + menuHeight > window.innerHeight) {
+      y = window.innerHeight - menuHeight - 10;
+    }
+  
+    setMenuPosition({ x, y });
+  }, [menuPosition, otherStatuses.length]);
+  
+
   return (
     <div
       ref={setNodeRef}
@@ -90,11 +113,15 @@ export default function TaskCard({ task, openContextId, setOpenContextId, color,
         </div>
       </div>
       
-      {openContextId === id && (
+      {openContextId === id && menuPosition && (
         <div
           ref={menuRef}
           className="absolute z-50 bg-white border shadow rounded"
-          style={{ top: 30, left: 0 }}
+          style={{
+            top: menuPosition.y,
+            left: menuPosition.x,
+            position: "fixed"
+          }}
           onContextMenu={e => e.preventDefault()}
         >
           {otherStatuses.map(s => (

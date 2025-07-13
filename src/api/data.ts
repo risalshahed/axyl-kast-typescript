@@ -33,7 +33,7 @@ export const data: TaskItem[] = [
   {
     id: crypto.randomUUID(),
     title: 'Lyxa AI Task Submit',
-    description: 'Create a Kanban board for handing Todo List with smooth user interface',
+    description: 'Create a Kanban board for handing Todo List with smooth user experience',
     status: 'ongoing'
   },
   {

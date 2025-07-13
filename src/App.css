@@ -19,8 +19,51 @@ body {
 
 .context-menu {
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  }
+}
   
 .context-menu-item:hover {
 background-color: #f0f0f0;
+}
+
+@keyframes fadeSlideFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px); /* e.g. -40px */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-from-top {
+    animation: fadeSlideFromTop 0.5s ease-out;
+}
+.animate-from-bottom {
+    animation: fadeSlideFromBottom 0.5s ease-out;
+}
+.animate-from-right {
+    animation: fadeSlideFromRight 0.5s ease-out;
 }
