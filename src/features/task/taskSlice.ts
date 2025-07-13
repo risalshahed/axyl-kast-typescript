@@ -31,25 +31,11 @@ export const createTask = createAsyncThunk<TaskItem, Omit<TaskItem, 'id'>>(
   }
 );
 
-export const removeTask = createAsyncThunk<
-  TaskItem[],
-  string
->('task/removeTask', id => {
-  const task = deleteTask(id);
-  return task;
-});
-
 // create slice
 const taskSlice = createSlice({
   name: 'task',
   initialState,
   reducers: {
-    // activeUpdate: (state, action: PayloadAction<Record<string, unknown>>) => {
-    //   state.taskUpdating = action.payload;
-    // },
-    // inactiveUpdate: state => {
-    //   state.taskUpdating = {};
-    // },
     updateTaskLocal: (state, action: PayloadAction<{ id: string; data: Partial<Omit<TaskItem, 'id'>> }>) => {
       const { id, data } = action.payload;
       const index = state.tasks.findIndex(t => t.id === id);

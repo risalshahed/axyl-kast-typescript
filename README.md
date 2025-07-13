@@ -54,31 +54,25 @@ This project demonstrates task management across different stages, context menus
 
 ### Due Date & Overdue Alerts
 
-In Ongoing column, set a due date/time
-
-Application checks if tasks are overdue and shows an alert if so
+- In Ongoing column, set a due date/time
+- Application checks if tasks are overdue and shows an alert if so
 
 ### Responsive Design & Animations
 
-Tailwind CSS used for layout and styling
-
-Subtle animations when:
-
-Tasks are added
-
-Tasks move between columns
-
-Alerts appear
+- Tailwind CSS used for layout and styling
+- Subtle animations when:
+  - Tasks are added
+  - Tasks move between columns
+  - Alerts appear
 
 ### TypeScript Strictness
 
-Type safety throughout the codebase
+- Type safety throughout the codebase
 
 ### Redux Toolkit Integration
 
-Global state management of all tasks
-
-Clean slices and actions
+- Global state management of all tasks
+- Clean slices and actions
 
 ### ⚙️ Tech Stack
 
@@ -92,7 +86,7 @@ Clean slices and actions
 ### Run the Project locally as follows
 
 ```
-
+https://github.com/risalshahed/axyl-kast-typescript.git
 ```
 
 ### Install dependencies

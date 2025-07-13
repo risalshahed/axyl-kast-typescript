@@ -2,7 +2,6 @@ import { useDroppable } from "@dnd-kit/core";
 import type { Column as ColumnType, TaskItem } from "../api/data"
 import TaskCard from "./TaskCard";
 import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Form from "./Form";
 
 interface ColumnProps {

@@ -5,20 +5,20 @@
 }
 
 html, body {
-    background-color: #eaeaea;
+  background-color: #eaeaea;
 }
 
 body {
     max-width: 1024px;
-    margin: auto;
+  margin: auto;
 }
 
 .column {
-    box-shadow: 5px 8px 18px #ccc;
+  box-shadow: 5px 8px 18px #ccc;
 }
 
 .context-menu {
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
   
 .context-menu-item:hover {
