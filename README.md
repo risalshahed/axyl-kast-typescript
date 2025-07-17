@@ -88,7 +88,8 @@ This project demonstrates task management across different stages, context menus
 ### Run the Project locally as follows
 
 ```
-https://github.com/risalshahed/axyl-kast-typescript.git
+git clone https://github.com/risalshahed/axyl-kast-typescript.git
+cd axyl-kast-typescript
 ```
 
 ### Install dependencies
