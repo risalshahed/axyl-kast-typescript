@@ -1,7 +1,8 @@
 import { useDraggable } from "@dnd-kit/core";
 import type { TaskItem } from "../api/data";
 import React, { useEffect, useRef, useState } from "react";
-import { removeTask, updateTaskLocal } from "../features/task/taskSlice";
+// import { removeTask, updateTaskLocal } from "../features/task/taskSlice";
+import { updateTaskLocal } from "../features/task/taskSlice";
 import { useAppDispatch } from "../app/hooks";
 
 interface TaskCardProps {
@@ -85,11 +86,11 @@ export default function TaskCard({ task, openContextId, setOpenContextId, color,
     setMenuPosition({ x, y });
   }, [menuPosition, otherStatuses.length]);
 
-  const handleRemove = (e: React.MouseEvent<HTMLButtonElement>, taskId: string) => {
-    console.log('task id', taskId);
-    dispatch(removeTask(taskId));
-    e.stopPropagation();
-  }
+  // const handleRemove = (e: React.MouseEvent<HTMLButtonElement>, taskId: string) => {
+  //   console.log('task id', taskId);
+  //   dispatch(removeTask(taskId));
+  //   e.stopPropagation();
+  // }
 
   const renderDeadlineMessage = () => {
     if (!selectedDate) return null;
