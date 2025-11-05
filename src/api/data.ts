@@ -47,9 +47,9 @@ export const data: TaskItem[] = [
   {
     id: crypto.randomUUID(),
     title: 'Prepare Lecture',
-    description: 'Organize the outlines for the Next JS Performance Optimization class of Ostad',
+    description: 'Organize the outlines for the MERN Stack courses of different batches of Ostad',
     status: 'new',
     movedToOngoingAt: null,
     dueAt: null
-  },
+  }
 ];

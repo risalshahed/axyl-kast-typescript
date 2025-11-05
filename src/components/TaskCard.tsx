@@ -1,7 +1,7 @@
 import { useDraggable } from "@dnd-kit/core";
 import type { TaskItem } from "../api/data";
 import React, { useEffect, useRef, useState } from "react";
-import { updateTaskLocal } from "../features/task/taskSlice";
+import { removeTask, updateTaskLocal } from "../features/task/taskSlice";
 import { useAppDispatch } from "../app/hooks";
 
 interface TaskCardProps {
@@ -85,6 +85,12 @@ export default function TaskCard({ task, openContextId, setOpenContextId, color,
     setMenuPosition({ x, y });
   }, [menuPosition, otherStatuses.length]);
 
+  const handleRemove = (e: React.MouseEvent<HTMLButtonElement>, taskId: string) => {
+    console.log('task id', taskId);
+    dispatch(removeTask(taskId));
+    e.stopPropagation();
+  }
+
   const renderDeadlineMessage = () => {
     if (!selectedDate) return null;
   
@@ -135,7 +141,15 @@ export default function TaskCard({ task, openContextId, setOpenContextId, color,
           {...listeners}
           onContextMenu={handleContextMenu}
         >
-          <h3 className="font-semibold pb-2">{title}</h3>
+          <div className="flex justify-between items-center">
+            <h3 className="font-semibold pb-2">{title}</h3>
+            {/* <button
+              onClick={e => handleRemove(e, id)}
+              className="bg-red-600 text-white px-2 rounded-md cursor-pointer"
+            >
+              ✕
+            </button> */}
+          </div>
           <div className="flex items-end justify-between">
             <p className="text-[12px] pr-5">{description}</p>
             <p className={`${color} p-1 rounded text-[12px] capitalize`}>

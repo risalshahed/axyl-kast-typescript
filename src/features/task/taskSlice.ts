@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit"
-import { addTask, getTasks } from "./taskApi"
+import { addTask, deleteTask, getTasks } from "./taskApi"
 import type { TaskItem } from "../../api/data";
 
 export interface TaskState {
@@ -28,6 +28,12 @@ export const createTask = createAsyncThunk<TaskItem, Omit<TaskItem, 'id'>>(
   'task/createTask', (data) => {
     const task = addTask(data);
     return task;
+  }
+);
+
+export const removeTask = createAsyncThunk<string, string>(
+  'task/removeTask', (id) => {
+    return deleteTask(id); // taskApi theke id return korbe
   }
 );
 
@@ -93,6 +99,21 @@ const taskSlice = createSlice({
         state.error = action.error?.message;
       }
     )
+    // remove
+    .addCase(removeTask.pending, state => {
+      state.isError = false;
+      state.isLoading = true;
+    })
+    .addCase(removeTask.fulfilled, (state, action) => {
+      state.isError = false;
+      state.isLoading = false;
+      state.tasks = state.tasks.filter(t => t.id !== action.payload);
+    })
+    .addCase(removeTask.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.error?.message;
+    });
   }
 });
 
